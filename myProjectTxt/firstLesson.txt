@@ -1,0 +1,83 @@
+package com.example.wirecalculator // Замените на имя вашего пакета, если оно отличается
+
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Разворачиваем наш UI внутри MainActivity
+        setContent {
+
+            NewText()
+        }
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NewText() {
+    Row(
+        modifier = Modifier
+            .background(Color.Gray)
+            .fillMaxSize(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    )
+    {
+        Column(
+            modifier = Modifier
+                .background(Color.Yellow)
+                .fillMaxHeight(0.5f)
+                .fillMaxWidth(0.5f),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "My first ")
+            Text(text = "My first ")
+            Text(text = "My first ")
+        }
+        Column(
+            modifier = Modifier
+                .background(Color.Blue)
+                .fillMaxHeight(0.5f)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "My first ")
+            Text(text = "My first ")
+            Text(text = "My first ")
+        }
+    }
+}
+
+
+
+// этот урок про разметку элементов на экране смартфона такие элементы как Row and Column
+// они могут помещаться друг в друга сдесь поместили два Column в Row
+// у этих элементов есть свои параметры это первое как и у всех Modifier он
+// он сам контейнер делает цвет фона  размеры блока и расположение элементов
+// на нем расположилось три элемента это Text это все описывается в круглых скобках
+//только Modifier  описывает через точку само пространство(контейнер)
+//дапустим Row  background(Color.Gray) а через запятую на нем эле-
+//менты в нашем случае текст это на  Row horizontalArrangemetn  и verticalAligement расположе-
+//ние Text(text="My first ")

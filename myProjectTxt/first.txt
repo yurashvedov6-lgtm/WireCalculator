@@ -1,0 +1,221 @@
+package com.example.wirecalculator
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+
+// 1. КЛАСС ЗАПУСКА ПРИЛОЖЕНИЯ
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainScreen()
+                }
+            }
+        }
+    }
+}
+
+// 2. ВАШ ОБНОВЛЕННЫЙ РАБОЧИЙ ЭКРАН
+@Composable
+fun MainScreen() {
+    val input1State = rememberSaveable { mutableStateOf("") }
+    val input2State = rememberSaveable { mutableStateOf("") }
+
+    val result1State = rememberSaveable { mutableStateOf("Площадь S1: 0.000 мм²") }
+    val result2State = rememberSaveable { mutableStateOf("Площадь S2: 0.000 мм²") }
+
+    // Начальное состояние строки общего итога делаем пустой, чтобы проверять её
+    val totalResultState = rememberSaveable { mutableStateOf("") }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+
+        // --- БЛОК ПЕРВОГО ПОЛЯ ---
+        OutlinedTextField(
+            value = input1State.value,
+            onValueChange = { input1State.value = it },
+            label = { Text("Диаметр d1") },
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = result1State.value, color = Color.DarkGray, modifier = Modifier.padding(top = 8.dp))
+            Button(
+                onClick = {
+                    input1State.value = ""
+                    result1State.value = "Площадь S1: 0.000 мм²"
+                },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray, contentColor = Color.Yellow)
+            ) {
+                Text("Очистить d1")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // --- БЛОК ВТОРОГО ПОЛЯ ---
+        OutlinedTextField(
+            value = input2State.value,
+            onValueChange = { input2State.value = it },
+            label = { Text("Диаметр d2") },
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = result2State.value, color = Color.DarkGray, modifier = Modifier.padding(top = 8.dp))
+            Button(
+                onClick = {
+                    input2State.value = ""
+                    result2State.value = "Площадь S2: 0.000 мм²"
+                },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray, contentColor = Color.Yellow)
+            ) {
+                Text("Очистить d2")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // --- ОБЩИЙ РЕЗУЛЬТАТ ОПЕРАЦИЙ (Показывается, только если он не пустой) ---
+        if (totalResultState.value.isNotEmpty()) {
+            Text(text = totalResultState.value, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // --- УМНАЯ КНОПКА: ВЫЧИСЛИТЬ ИЛИ ОЧИСТИТЬ РЕЗУЛЬТАТ ---
+        Button(
+            onClick = {
+                // Если результат уже выведен на экран — кнопка работает как СБРОС
+                if (totalResultState.value.isNotEmpty()) {
+                    totalResultState.value = ""
+                } else {
+                    // Если результата нет — она просто рассчитывает площади полей
+                    val area1 = calculateAreaFromString(input1State.value)
+                    val area2 = calculateAreaFromString(input2State.value)
+
+                    result1State.value = "Площадь S1 = ${formatArea(area1)} мм²"
+                    result2State.value = "Площадь S2 = ${formatArea(area2)} мм²"
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            // Меняем цвет: синий для вычислений, темно-серый для очистки общего итога
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (totalResultState.value.isNotEmpty()) Color(0xFF424242) else Color.Blue,
+                contentColor = Color.Yellow
+            )
+        ) {
+            // Меняем текст на кнопке на лету!
+            Text(if (totalResultState.value.isNotEmpty()) "Очистить результат" else "Вычислить S1 S2")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // --- РЯД КНОПОК МАТЕМАТИКИ МЕЖДУ ПОЛЯМИ ---
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Button(
+                onClick = {
+                    val area1 = calculateAreaFromString(input1State.value)
+                    val area2 = calculateAreaFromString(input2State.value)
+                    val sum = area1 + area2
+
+                    result1State.value = "Площадь S1 = ${formatArea(area1)} мм²"
+                    result2State.value = "Площадь S2 = ${formatArea(area2)} мм²"
+                    totalResultState.value = "➕ Сумма площадей (S1 + S2) = ${formatArea(sum)} мм²"
+                },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1B5E20), contentColor = Color.White)
+            ) {
+                Text("Сложить (+)")
+            }
+
+            Button(
+                onClick = {
+                    val area1 = calculateAreaFromString(input1State.value)
+                    val area2 = calculateAreaFromString(input2State.value)
+                    val diff = area1 - area2
+
+                    result1State.value = "Площадь S1: ${formatArea(area1)} мм²"
+                    result2State.value = "Площадь S2: ${formatArea(area2)} мм²"
+                    totalResultState.value = "➖ Разность площадей (S1 - S2) = ${formatArea(diff)} мм²"
+                },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB71C1C), contentColor = Color.White)
+            ) {
+                Text("Вычесть (-)")
+            }
+        }
+    }
+}
+
+fun calculateAreaFromString(rawText: String): Double {
+    if (rawText.isBlank()) return 0.0
+    val diameterStrings = rawText.split("+")
+    var totalArea = 0.0
+
+    for (str in diameterStrings) {
+        val trimmedStr = str.trim()
+        val diameter = trimmedStr.toDoubleOrNull()
+        if (diameter != null && diameter > 0) {
+            val area = (Math.PI * diameter * diameter) / 4
+            totalArea += area
+        }
+    }
+    return totalArea
+}
+
+fun formatArea(area: Double): String {
+    return try {
+        String.format(java.util.Locale.US, "%.3f", area)
+    } catch (_: Exception) {
+        area.toString()
+    }
+}
+// Эта последняя программа по диаметру только еще не совсем доработанная

@@ -1,0 +1,131 @@
+package com.example.wirecalculator // Замените на имя вашего пакета, если оно отличается
+
+
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.sp
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Разворачиваем наш UI внутри MainActivity
+        setContent {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                ListItem()
+                ListItem()
+                ListItem()
+                ListItem()
+                ListItem()
+            }
+
+            //)
+
+        }
+    }
+}
+
+
+//@Preview(showBackground = true)
+@Composable
+private fun ListItem() {
+    var counter by remember { mutableIntStateOf(0) }//связал перем с состоянием
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(250.dp)
+            .padding(25.dp)
+            .clickable {// сдесь фу поведения card при клике увеличив перем на ед
+                counter++//подключил переменную в виде счетчика
+                Log.d("MY_TEG", "Card clicked:$counter")// запустил logcat
+
+            },
+        shape = RoundedCornerShape(15.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp
+        )
+    )
+
+    {
+        Box(
+            modifier = Modifier
+                .background(Color.Blue)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+
+        )
+        {
+            Row(
+                modifier = Modifier
+                    .background(Color.Yellow),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.tranzist),
+                    contentDescription = "my image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .size(150.dp)
+                        .clip(CircleShape)
+
+                )
+
+                Text(text = "$counter",// здесь выводим переменную $counter
+
+                        fontSize = 125.sp)//сдесь размер букв
+
+            }
+        }
+    }
+}
+
+
+
+/*1.Сдесь код я сделал коментарии на основных строчках где как работате state состояние
+ тоесть где переменная показывает compose что она изменилась и элемент где она обявляется
+  нееобходимо перерисовать.
+2.Сдесь FOUTHLesson первый урок по state состояние элемента .меняется перемен-
+ная  котороя говорит с помощью фу remember{muteableStateOF(0)}. Что перем counter привя-
+ к состоянию элемента и элемент с изменением переменной будет перересовываться а не вся
+конструкция где находится элемент это декларативное свойство jetpark compose
+3.Также можно проверить работу кода в LogCat 77 строка там первый элемент MY_LOG это фильтр
+ его просто дописываем в поисковой строке а  второй элемент это то действие
+ 4.это урок еще по behavior тоесть передовать поведение элементов*/

@@ -1,0 +1,91 @@
+package com.example.wirecalculator // Замените на имя вашего пакета, если оно отличается
+
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Разворачиваем наш UI внутри MainActivity
+        setContent {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Yellow, shape = CircleShape),
+                // .padding(45.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            )
+            {
+                StateButton()
+                StateButton()
+                StateButton()
+            }
+
+        }
+    }
+}
+
+
+//@Preview(showBackground = true)
+@Composable
+private fun StateButton() {
+    var counter by remember { mutableIntStateOf(0) }
+    var boxColor by remember { mutableStateOf(Color.LightGray) }
+    Box(
+        modifier = Modifier
+            .size(100.dp)
+            .background(boxColor, shape = CircleShape)
+            .clickable{
+                counter++
+                Log.d("MY_TAG" , "счет идет :$counter ")
+                boxColor = when {
+                    counter >= 10 -> Color.Green
+                    counter >= 5 -> Color.Red
+                    else -> Color.LightGray
+                }
+            },
+        contentAlignment = Alignment.Center,
+
+
+
+        ) {
+        Text(
+            text = "$counter ",
+            color = Color.Yellow,
+            fontSize = 45.sp
+        )
+    }
+}
+
+/*1.ЭТО sixthLesson продолжение урока в файле fivethLesson.txt тоесть продолжаем
+изучать состояние элементов.
+ 2.Только заменил фу clickable{} переменная boxColor меняется по условию when
+ 2а. если counter >= 10 То -> Color изменяет цвет */
+
+

@@ -1,0 +1,76 @@
+package com.example.wirecalculator // Замените на имя вашего пакета, если оно отличается
+
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Разворачиваем наш UI внутри MainActivity
+        setContent {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+                    .background(Color.Magenta),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+
+                )
+            {
+                items(50) { index ->// количество элементов
+                    Text(
+                        text = "my text ${index + 1}",//переменная
+                        style = TextStyle
+                            (fontSize = 45.sp),
+                        color = Color.White
+                    )
+                }
+            }
+        }
+    }
+}
+
+/* 1.в этом втором уроке LessonList_1.txt про список
+2.Мы пытаемся создать список с помощью LazyColumn сдесь уже не нужно использовать
+ Цикл for сдесь работает items что он делает ему Lazty(ленивый ) говорит отрисуй на
+ экране столько элементов сколько помещается на экран сейчас на экране 18 а остальные
+ 32 не рисуй и соответственно не занимай память телефона
+3. Tак же не используется .verticalScroll(remenberScrollState) она уже в Lazy есть
+4.index это номер списка к которому мы прибавили 1 и и запхали их в переменную с пра
+вой стороны появились номер по порядку списка
+*/
+/*================================================================================*/
+/*
+                    ОБЯСНЕНИЕ LazyColume и items
+     Функция items работает как умный конвейер:
+     • Рисует только видимое: LazyColumn смотрит на размер экрана телефона и
+      просит блок items создать только первые элементы Text,
+     которые помещаются на экран прямо сейчас.
+     Остальные элементы даже не создаются в памяти.
+     • Переиспользует элементы при прокрутке: Когда вы листаете список вниз,
+     верхний Text уходит за пределы экрана и уничтожается,
+     а items тут же создает новый Text снизу.
+     • Понимает структуру списка: Сам LazyColumn — это просто пустая коробка для прокрутки,
+      которая принимает только «инструкции» о том, какие блоки в ней будут лежать.
+     Блок item говорит: «Вот инструкция для одного блока (например, заголовка)»,
+      а items говорит: «Вот шаблон, по которому нужно штамповать много одинаковых блоков».
+
+*/
+

@@ -1,0 +1,91 @@
+package com.example.wirecalculator // Замените на имя вашего пакета, если оно отличается
+
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Разворачиваем наш UI внутри MainActivity
+        setContent {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                StateBox()
+
+            }
+
+        }
+    }
+}
+
+
+//@Preview(showBackground = true)
+@Composable
+private fun StateBox() {
+    var counter by remember { mutableIntStateOf(0) }
+    var boxColor by remember { mutableStateOf(Color.LightGray) }
+    Box(
+        modifier = Modifier
+            .padding(5.dp)
+            .size(245.dp)
+            .background(
+                boxColor,
+                shape = CircleShape
+            )
+            .clickable {
+                when (++counter) {
+                    5 -> boxColor = Color.Blue
+                    10 ->boxColor = Color.Magenta
+                }
+                Log.d("MY_TAG", "my counter:$counter")
+            },
+        contentAlignment = Alignment.Center
+
+
+    )
+    {
+        Text(text = "myBox $counter",
+            style = TextStyle
+        (fontSize = 45.sp, color = Color.White))
+    }
+}
+
+/*1.Здесь продолжение урока про состояние(state) fouthLesson
+убрал картинку оставил только box .
+ 2.и ввел еще одну переменную boxColor ее поставил в backgrond Box
+ 3.Затем с помощью условия when при изменении counter переменная boxColor меняет цвет
+ background в Box*/
+
+

@@ -1,0 +1,94 @@
+package com.example.wirecalculator // Замените на имя вашего пакета, если оно отличается
+
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Разворачиваем наш UI внутри MainActivity
+        setContent {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(5.dp)
+                    .background(Color.Magenta, shape = CircleShape),
+
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            )
+            {
+                StateBox()
+            }
+
+        }
+    }
+}
+
+
+//@Preview(showBackground = true)
+@Composable
+private fun StateBox() {
+    var counter by remember { mutableIntStateOf(0) }
+    //var boxColor by remember { mutableStateOf(Color.Green) }
+    Box(
+        modifier = Modifier
+            .size(100.dp)
+            /*внизу первый рабочий самый продвинутый код*/
+            .background(
+                color = when {
+                    counter >= 10 -> Color.Blue
+                    counter >= 5 -> Color.Yellow
+                    else -> Color.Green
+                },
+                shape = CircleShape
+            )
+            .clickable {
+                counter++
+                Log.d("MY_TAG", "счет идет :$counter ")
+            },
+        contentAlignment = Alignment.Center
+    )
+
+    {
+        Text(
+            text = "$counter ",
+            style = TextStyle(Color.Magenta, fontSize = 45.sp)
+        )
+    }
+}
+
+/* 1.Это урок seventhLesson сдесь код тот же что и в sixth.txt
+2.только убрали переменную boxColor и
+3.И непосредственно фу лямбду с условием when и перем counter
+вставили в атрибут background  color
+ 4.ИТОГО ПОЛУЧИЛОСЬ ЧЕТЫРЕ УРОКА ПО ИЗУЧЕНИЮ СОСТОЯНИЯ STATE
+ fouthLesson - seventhLesson*/
+
+

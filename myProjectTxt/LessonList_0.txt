@@ -1,0 +1,58 @@
+package com.example.wirecalculator // Замените на имя вашего пакета, если оно отличается
+
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Разворачиваем наш UI внутри MainActivity
+        setContent {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(5.dp)
+                    .background(Color.Magenta, shape = CircleShape)
+                    .verticalScroll(rememberScrollState()),
+
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+
+            )
+            {
+                for (i in 1..100) {
+
+                    Text(
+                        text = "my text $i", style = TextStyle
+                            (fontSize = 45.sp), color = Color.White
+                    )
+                }
+            }
+
+        }
+    }
+}
+
+/* 1.в этом первом уроке LessonList_0.txt по списку
+* 2.Мы создаем список как бы массив с помощью цикла for(i in 1.. 100){сюда помещаем Text
+* 3. в modifier добавляем verticalScrol (rememberScrollState)помтомучто 100 элементов}*/
+

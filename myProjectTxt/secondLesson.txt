@@ -1,0 +1,111 @@
+package com.example.wirecalculator // Замените на имя вашего пакета, если оно отличается
+
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Разворачиваем наш UI внутри MainActivity
+        setContent {
+            Column() {
+                ListItem(name = " ", data = " ")
+                ListItem(name = " ", data = " ")
+
+            }
+        }
+
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
+private fun ListItem(name: String, data: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Gray)
+            .padding(25.dp),
+        shape = RoundedCornerShape(15.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp
+        )
+    )
+
+    {
+        Box(
+            modifier = Modifier
+                .background(Color.Blue)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+
+        )
+        {
+            Row(
+                modifier = Modifier
+                    .background(Color.Yellow),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.tranzist),
+                    contentDescription = "my image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .size(64.dp)
+                        .clip(CircleShape)
+
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.tranzist),
+                    contentDescription = "my image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .size(64.dp)
+                        .clip(CircleShape)
+
+                )
+                Column(
+                    modifier = Modifier
+                        .background(Color.Green)
+                ) {
+                    Text(text = "транзистор ")
+                    Text(text = "second")
+                    Text(text = "third text")
+                }
+            }
+        }
+    }
+}
+
+
+
+//в этом коде добавили два элемента виджета это image и Несколько текстов
+//снвчало сделали фу ListItem в нее положили card контейнер
+//затем с в card вставили Контейнер Box он помещает один элемент
