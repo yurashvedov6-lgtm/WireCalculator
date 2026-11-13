@@ -24,6 +24,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
+/*
+1. Параметры функции (ScientistCard)
+
+• item: ScientistItems — принимает данные одного конкретного ученого (фото, имя, краткое описание),
+ чтобы заполнить ими карточку.
+• onItemClick: (ScientistItems) -> Unit — получает функцию-действие из MainActivity.kt,
+которая должна сработать при клике на эту карточку.
+*/
 fun ScientistCard(
     item: ScientistItems,
     onItemClick: (ScientistItems) -> Unit
@@ -66,3 +74,4 @@ fun ScientistCard(
         }
     }
 }
+//описание одной карточки швблон одного элемента
