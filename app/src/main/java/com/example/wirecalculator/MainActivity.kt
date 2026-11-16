@@ -6,17 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.wirecalculator.ui.theme.Gray100
 
 
 class MainActivity : ComponentActivity() {
@@ -25,34 +21,58 @@ class MainActivity : ComponentActivity() {
 
         // Разворачиваем наш UI внутри MainActivity
         setContent {
-            val myItems = listOf("first","second","third","fourth","fifth")
-            LazyColumn(
+            val scientistItems = listOf(
+                ItemRowModel(R.drawable.newton , title ="Ньютон"," 1643 -1727"),
+                ItemRowModel(R.drawable.leibniz , title ="Лейбниц" ,caption = "1646 -1716"),
+                ItemRowModel(R.drawable.huygens, title ="Христиан Гюйгенс" ,"1629-1695"),
+                ItemRowModel(R.drawable.hooke, title ="Роберт Хук", "1635 -1703")
+            )
+            LazyRow(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(10.dp)
-                    .background(Color.Magenta),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+                    .background(Gray100),
+                //verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement  = Arrangement.Center,
 
                 )
             {
-                itemsIndexed(myItems) {index,items ->
-                    Text(
-                        text = items,
-                        style = TextStyle
-                            (fontSize = 45.sp),
-                        color = Color.White
-                    )
+                itemsIndexed(scientistItems) {_,model ->
+ItemRow(model = model)
                 }
             }
         }
     }
 }
 
-/* 1.в этом третьем  уроке LessonList_2.txt про список
-2.Мы пытаемся создать список с помощью LazyColumn но вместо фу items мы создаем
-фу itemsIndecsed
-2. В скобках в пораметры записываем переменную с присвоиным списком listOF()
-3.В фигурных скобках записываем порядковый номер Indexs и элементs items
-4.Этими фиг скобками оборачиваем Text в которым выводим переменную items
+/* 1.в этой ветке Git lessonSeven
+
+1.Работаю github нахожусь в состоян Detached HEAD вне веток если сделать commit
+его будет сложно найти.
+2.Создаем ветку прямо сейчас в нижней вкладке git на строчку с желтой меткой
+Detached HEAD жмем правой кнопкой мыши и выбираем New Branch .
+3.После делаем название lessonSeven
+ */
+/*===============================================================================*/
+/*
+/*
+ * 1. Создал переменную scientistItems и присвоил ей результат функции listOf(),
+ поместив внутрь список из четырех объектов.
+ */
+ * 2. Для создания каждого объекта использовал конструктор класса ItemRowModel() и
+ передал данные (аргументы) в его свойства (imageId, title, caption).
+ */
+
+ /*
+ *    (Памятка: у класса внутри хранятся свойства,
+ * при объявлении функции в скобках пишутся параметры,
+  а при вызове функции передаются аргументы).
+ */
+/*
+ * 3. Передал переменную scientistItems как аргумент в функцию itemsIndexed.
+ * 4. В файле ItemRow.kt объявил параметр с придуманным именем model (типа ItemRowModel).
+ * 5. Внутри itemsIndexed каждый объект из списка по очереди передается в этот параметр model,
+и по единому шаблону из ItemRow.kt отрисовываются все карточки.
+
+
  */
